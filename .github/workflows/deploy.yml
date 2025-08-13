@@ -62,6 +62,18 @@ jobs:
     - name: Update kubeconfig
       run: aws eks update-kubeconfig --region ${{ env.AWS_REGION }} --name ${{ env.EKS_CLUSTER_NAME }}
       
+    - name: Create namespace if not exists
+      run: kubectl create namespace ${{ env.EKS_NAMESPACE }} --dry-run=client -o yaml | kubectl apply -f -
+      
+    - name: Apply Kubernetes resources
+      run: |
+        # Apply namespace, deployment, and other resources
+        kubectl apply -f k8s/namespace.yaml
+        kubectl apply -f k8s/deployment.yaml
+        
+        # Wait for resources to be ready
+        kubectl wait --for=condition=available --timeout=300s deployment/hello-world-app -n ${{ env.EKS_NAMESPACE }}
+      
     - name: Deploy to EKS
       run: |
         # Update the deployment with new image tag
