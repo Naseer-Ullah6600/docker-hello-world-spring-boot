@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: hello-world
-        image: placeholder-image:latest
+        image: ${ECR_REGISTRY}/${ECR_REPOSITORY}:${IMAGE_TAG}
         ports:
         - containerPort: 8080
         resources:
