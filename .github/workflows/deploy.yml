@@ -49,7 +49,7 @@ jobs:
       
     - name: Generate unique tag
       id: tag
-      run: echo "tag=$(date +%Y%m%d-%H%M%S)-${{ github.sha::7 }}" >> $GITHUB_OUTPUT
+      run: echo "tag=$(date +%Y%m%d-%H%M%S)-${{ github.sha }}" >> $GITHUB_OUTPUT
       
     - name: Build, tag, and push image to Amazon ECR
       env:
